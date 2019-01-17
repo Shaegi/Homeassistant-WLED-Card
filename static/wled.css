@@ -1,0 +1,18 @@
+.iro__slider {
+}
+
+.iro__marker__outer {
+  display: none;
+}
+
+.iro__marker__inner {
+  stroke: black;
+}
+
+input {
+  display: block;
+}
+
+h2 {
+  color: red;
+}
