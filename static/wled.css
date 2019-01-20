@@ -1,3 +1,9 @@
+:root {
+  --lightGray: #d7dcdf; 
+  --gray: #2c3e50; 
+  --prim: #1abc9c;
+}
+
 .iro__slider {
 }
 
@@ -6,7 +12,11 @@
 }
 
 .iro__marker__inner {
-  stroke: black;
+  stroke: var(--gray);
+}
+
+.header {
+  color: red;
 }
 
 input {
@@ -14,5 +24,85 @@ input {
 }
 
 h2 {
-  color: red;
+  color: var(--gray);
 }
+
+select {
+  padding: 10px 5px;
+  font-weight: 800;
+}
+
+option {
+  padding: 5px;
+}
+
+.card button {
+  padding: 5px;
+  background: none;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: calc(50% - (60px + 13px));
+  height: 5px;
+  border-radius: 5px;
+  background: var(--lightGray);
+  outline: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+input[type=range]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    -webkit-appearance: none;
+    border-radius: 50%;
+    background: var(--gray);
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  background: var(--prim);
+}
+
+.range-slider__range::-webkit-slider-thumb:active {
+
+}
+    /* &:hover {
+      background: $range-handle-color-hover;
+    }
+  }
+
+  &:active::-webkit-slider-thumb {
+    background: $range-handle-color-hover;
+  }
+
+  &::-moz-range-thumb {
+    width: $range-handle-size;
+    height: $range-handle-size;
+    border: 0;
+    border-radius: 50%;
+    background: $range-handle-color;
+    cursor: pointer;
+    transition: background .15s ease-in-out;
+
+    &:hover {
+      background: $range-handle-color-hover;
+    }
+  }
+
+  &:active::-moz-range-thumb {
+    background: $range-handle-color-hover;
+  }
+  
+  // Focus state
+  &:focus {
+    
+    &::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px $shade-0,
+                  0 0 0 6px $teal;
+    }
+  }
+} */
+
