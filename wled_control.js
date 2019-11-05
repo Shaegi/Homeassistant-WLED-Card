@@ -104,8 +104,7 @@ class ContentCardExample extends HTMLElement {
     this.appendChild(card);
     card.append(this.content);
     this.content.append(this.initCardContent())
-
-    const entityId = this.config.entity;
+    
     const title = this.config.title
   }
 
@@ -386,9 +385,6 @@ class ContentCardExample extends HTMLElement {
   }
 
   setConfig(config) {
-    if (!config.entity) {
-      throw new Error('You need to define an entity');
-    }
     this.config = config;
   }
 
