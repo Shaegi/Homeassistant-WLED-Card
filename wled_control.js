@@ -16,44 +16,57 @@ class ContentCardExample extends HTMLElement {
     this.instance = hass
     if (!this.content) {
       this.content = document.createElement('div');
+      this.showLoadingState()
       fetch(`http://${this.config.ip}/win`, {
-        headers: {}
-      }).then(res => {
-        return res.text()
-      }).then(res => {
-        const xmlDoc = (new DOMParser()).parseFromString(res, "text/xml")
-        const primColor = {
-          r: Number(xmlDoc.getElementsByTagName('cl')[0].innerHTML),
-          g: Number(xmlDoc.getElementsByTagName('cl')[1].innerHTML),
-          b: Number(xmlDoc.getElementsByTagName('cl')[2].innerHTML)
-        }
+          headers: {},
+          mode: 'cors',
+        }).then(res => {
+          return res.text()
+        }).then(res => {
+          const xmlDoc = (new DOMParser()).parseFromString(res, "text/xml")
+          const primColor = {
+            r: Number(xmlDoc.getElementsByTagName('cl')[0].innerHTML),
+            g: Number(xmlDoc.getElementsByTagName('cl')[1].innerHTML),
+            b: Number(xmlDoc.getElementsByTagName('cl')[2].innerHTML)
+          }
 
-        const secColor = {
-          r: Number(xmlDoc.getElementsByTagName('cs')[0].innerHTML),
-          g: Number(xmlDoc.getElementsByTagName('cs')[1].innerHTML),
-          b: Number(xmlDoc.getElementsByTagName('cs')[2].innerHTML)
-        }
+          const secColor = {
+            r: Number(xmlDoc.getElementsByTagName('cs')[0].innerHTML),
+            g: Number(xmlDoc.getElementsByTagName('cs')[1].innerHTML),
+            b: Number(xmlDoc.getElementsByTagName('cs')[2].innerHTML)
+          }
 
-        function rgbToHex(r, g, b) {
-          return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
+          function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+          }
 
-        self.state = {
-          fx: Number(xmlDoc.getElementsByTagName('fx')[0].innerHTML),
-          brightness: xmlDoc.getElementsByTagName('ac')[0].innerHTML,
-          primColor: rgbToHex(primColor.r, primColor.g, primColor.b),
-          secColor: rgbToHex(secColor.r, secColor.g, secColor.b),
-          fxSpeed: xmlDoc.getElementsByTagName('sx')[0].innerHTML,
-          fxIntensity: xmlDoc.getElementsByTagName('ix')[0].innerHTML,
-          fastLEDPalette: Number(xmlDoc.getElementsByTagName('fp')[0].innerHTML)
-        }
-        self.initContent()
-      })
-      .catch(err => {
-        self.state = defaultState
-        self.initContent()
-      })
+          self.state = {
+            fx: Number(xmlDoc.getElementsByTagName('fx')[0].innerHTML),
+            brightness: xmlDoc.getElementsByTagName('ac')[0].innerHTML,
+            primColor: rgbToHex(primColor.r, primColor.g, primColor.b),
+            secColor: rgbToHex(secColor.r, secColor.g, secColor.b),
+            fxSpeed: xmlDoc.getElementsByTagName('sx')[0].innerHTML,
+            fxIntensity: xmlDoc.getElementsByTagName('ix')[0].innerHTML,
+            fastLEDPalette: Number(xmlDoc.getElementsByTagName('fp')[0].innerHTML)
+          }
+          self.initContent()
+        })
+        .catch((err) => {
+          self.state = defaultState
+          console.warn('Could not fetch data,', err)
+          self.initContent()
+        })
     }
+  }
+
+  showLoadingState() {
+    const card = document.createElement('ha-card');
+    card.header = this.config.title;
+    const loadingWrapper = document.createElement('div')
+    loadingWrapper.innerHTML = 'Loading...'
+    loadingWrapper.id = 'loadingWrapper'
+    this.content.append(loadingWrapper)
+    card.append(this.content)
   }
 
   initCardStyle() {
@@ -80,16 +93,17 @@ class ContentCardExample extends HTMLElement {
   initContent() {
     const self = this
     const result = this.state
-    const modal = this.initModal(result)
+    this.initModal(result)
     const card = document.createElement('ha-card');
     card.header = this.config.title;
+    //clear loading
     this.content = document.createElement('div');
     this.content.style.padding = '0 16px 16px';
     this.content.className = 'card'
     card.append(this.initCardStyle())
     this.appendChild(card);
     card.append(this.content);
-    card.append(this.initCardContent())
+    this.content.append(this.initCardContent())
 
     const entityId = this.config.entity;
     const title = this.config.title
@@ -99,10 +113,41 @@ class ContentCardExample extends HTMLElement {
     const self = this
     const el = document.createElement('div')
 
-    const svgWrapper = document.createElement('div')
-    svgWrapper.style.display = 'flex';
-    svgWrapper.style.justifyContent = 'center'
+    this.lampIcon = document.createElement('div')
+    this.lampIcon.style.display = 'flex';
+    this.lampIcon.style.justifyContent = 'center'
 
+    this.updateOnState(self)
+
+    this.lampIcon.onclick = function () {
+      const brightnessSlider = self.brightnessSlider.querySelector('input')
+      if (self.state.brightness == 0) {
+        //on
+        self.state.brightness = 127
+        brightnessSlider.value = 127
+      } else {
+        //off
+        self.state.brightness = 0
+        brightnessSlider.value = 0
+      }
+      self.updateOnState(self)
+      self.mqttPublish("T")
+    }
+
+    const detailsButton = document.createElement('button')
+    detailsButton.innerHTML = 'Open Details'
+
+    detailsButton.addEventListener('click', function () {
+      self.modal.open()
+    })
+
+    el.append(this.lampIcon)
+    el.append(detailsButton)
+
+    return el
+  }
+
+  updateOnState (self){
     const lampOn = `
     <svg id="lamp123" style="height: 10vh" viewBox="0 0 24 24">
       <path  fill="#FFEF00" d="M8,2H16L20,14H4L8,2M11,15H13V20H18V22H6V20H11V15Z" />
@@ -114,33 +159,13 @@ class ContentCardExample extends HTMLElement {
       <path  fill="#2c3e50" d="M8,2H16L20,14H4L8,2M11,15H13V20H18V22H6V20H11V15Z" />
     </svg>
     `
-    svgWrapper.innerHTML = self.state.brightness === 0 ? lampOff : lampOn
-
-    svgWrapper.onclick = function () {
-
-      if(self.state.brightness === 0) {
-        //on
-        svgWrapper.innerHTML = lampOn
-        self.state.brightness = 127
-      }else{
-        //off
-        self.state.brightness = 0
-        svgWrapper.innerHTML = lampOff
-      }
-      self.mqttPublish("T")
+    if (Number(self.state.brightness) > 0) {
+      //on
+      self.lampIcon.innerHTML = lampOn
+    } else {
+      //off
+      self.lampIcon.innerHTML = lampOff
     }
-
-    const detailsButton = document.createElement('button')
-    detailsButton.innerHTML = 'Open Details'
-
-    detailsButton.addEventListener('click', function () {
-      self.modal.open()
-    })
-
-    el.append(svgWrapper)
-    el.append(detailsButton)
-
-    return el
   }
 
   initModal() {
@@ -153,7 +178,9 @@ class ContentCardExample extends HTMLElement {
     const content = document.createElement('div')
     const FXSection = this.createFXSection()
     const colorSection = this.createColorSection()
+    const brightnessSection = this.initBrightnessSection()
 
+    content.append(brightnessSection)
     content.append(FXSection)
     content.append(colorSection)
 
@@ -164,9 +191,30 @@ class ContentCardExample extends HTMLElement {
     this.modal = modal
   }
 
+  initBrightnessSection () {
+    const self = this
+
+    const section = document.createElement('div')
+    const headline = document.createElement('h2')
+    headline.innerHTML = 'Color'
+
+    const onChange = function (ev) {
+      const value = ev.target.value
+      self.mqttPublishAPI(`A=${value}`)
+      self.state.brightness = value
+      self.updateOnState(self)
+    }
+
+    this.brightnessSlider = createSlider(onChange, this.state.brightness, "Master Brightness", 0, 127)
+
+    section.append(this.brightnessSlider)
+
+    return section
+  }
+
   initFXSelect() {
     const self = this
-    const onChange = function (ev, effectValue) {
+    const onChange = function (ev, effectValue, emitOnChange) {
       let value = effectValue
       if (ev && ev.target.value) {
         value = Number(ev.target.value)
@@ -175,74 +223,63 @@ class ContentCardExample extends HTMLElement {
         return effect.value === value
       })
 
+      self.state.fx = value
+
       self.mqttPublishAPI(`FX=${value}`)
+      self.changeColorPickerVisibility(effect.primColor, effect.secondaryColor)
 
-      if (effect.primaryColor === false) {
-        self.primColorPicker.style.display = 'none'
+      if (effect.fastLED === false) {
+        self.fastLedSelectSection.style.display = 'none'
       } else {
-        self.primColorPicker.style.display = 'block'
+        self.fastLedSelectSection.style.display = 'block'
       }
 
-      if (effect.secondaryColor === false) {
-        self.secColorPicker.style.display = 'none'
-      } else {
-        self.secColorPicker.style.display = 'block'
-      }
     }
 
-    return this.fxSelect = this.createSelect(effects, self.state && self.state.fx ? self.state.fx : 0, onChange)
+    return this.fxSelect = createSelect(effects, self.state && self.state.fx ? self.state.fx : 0, onChange)
+  }
+
+  changeColorPickerVisibility(primVisible, secVisible) {
+    if (primVisible === false) {
+      this.primColorPicker.style.display = 'none'
+    } else {
+      this.primColorPicker.style.display = 'block'
+    }
+
+    if (secVisible === false) {
+      this.secColorPicker.style.display = 'none'
+    } else {
+      this.secColorPicker.style.display = 'block'
+    }
   }
 
   initFastLEDSelect() {
     const self = this
-    const onChange = function (ev, palleteValue) {
-      let value = palleteValue
+    const onChange = function (ev, paletteValue) {
+      let value = paletteValue
       if (ev && ev.target.value) {
         value = Number(ev.target.value)
       }
 
+      if (value > 5 || value === 1) {
+        self.changeColorPickerVisibility(false, false)
+      } else {
+        self.fxSelect.onchange(null, self.state.fx, false)
+      }
+
+      self.state.fastLEDPalette = value
+
       self.mqttPublishAPI(`FP=${value}`)
     }
+
     const el = document.createElement('div')
     const headline = document.createElement('h3')
     headline.innerHTML = 'FastLED Palette'
-    this.fastLedSelect =
-      this.createSelect(fastLEDPallete, self.state && self.state.fastLEDPalette ? self.state.fastLEDPalette : 0, onChange)
-
+    const fastLedSelect = this.fastLedSelect =
+      createSelect(fastLEDPalette, self.state && self.state.fastLEDPalette ? self.state.fastLEDPalette : 0, onChange)
     el.append(headline)
-    el.append(this.fastLedSelect)
-    return el
-  }
-
-  createSlider(onChange, value = 0, headline, min = 0, max = 100) {
-    const wrap = document.createElement('div')
-    if (headline) {
-      const hEl = document.createElement('h3')
-      hEl.innerHTML = headline
-      wrap.append(hEl)
-    }
-    const el = document.createElement('input')
-    el.style.display = "block"
-    el.type = 'range'
-    el.min = min
-    el.max = max
-    el.value = value
-    el.addEventListener('change', onChange)
-    wrap.append(el)
-    return wrap
-  }
-
-  createSelect(options, selectedValue, onChange) {
-    const el = document.createElement('select')
-    options.forEach(function (item) {
-      const option = document.createElement('option')
-      option.selected = item.value === selectedValue
-      option.innerHTML = item.label
-      option.value = item.value
-      el.append(option)
-    })
-
-    el.onchange = onChange
+    el.append(fastLedSelect)
+    this.fastLedSelectSection = el
     return el
   }
 
@@ -256,16 +293,16 @@ class ContentCardExample extends HTMLElement {
     picker.style.flexWrap = 'wrap'
     const primWrapper = this.primColorPicker = document.createElement('div')
     //primary color
-    const primColorPicker = this.initColorPicker("CL=", this.state.primColor)
-    const primHeadline = document.createElement('h2')
+    const primColorPicker = this.createColorPicker("CL=", this.state.primColor)
+    const primHeadline = document.createElement('h3')
     primHeadline.innerHTML = 'Primary Color'
     primWrapper.append(primHeadline)
     primWrapper.append(primColorPicker)
 
     const secWrapper = this.secColorPicker = document.createElement('div')
     //sec color
-    const secColorPicker = this.initColorPicker("C2=", this.state.secColor)
-    const secHeadline = document.createElement('h2')
+    const secColorPicker = this.createColorPicker("C2=", this.state.secColor)
+    const secHeadline = document.createElement('h3')
     secHeadline.innerHTML = 'Secondary Color'
     secWrapper.append(secHeadline)
     secWrapper.append(secColorPicker)
@@ -306,7 +343,7 @@ class ContentCardExample extends HTMLElement {
       self.mqttPublishAPI(`SX=${value}`)
     }
 
-    return this.createSlider(onChange, this.state.fxSpeed, "Effect speed")
+    return createSlider(onChange, this.state.fxSpeed, "Effect speed")
   }
 
   initFXIntensitySlider() {
@@ -316,10 +353,10 @@ class ContentCardExample extends HTMLElement {
       self.mqttPublishAPI(`IX=${value}`)
     }
 
-    return this.createSlider(onChange, this.state.fxIntensity, "Effect intensity")
+    return createSlider(onChange, this.state.fxIntensity, "Effect intensity")
   }
 
-  initColorPicker(api, initColor) {
+  createColorPicker(api, initColor) {
     const el = document.createElement('div')
     var colorPicker = new iro.ColorPicker(el, {
       height: 200,
@@ -333,6 +370,9 @@ class ContentCardExample extends HTMLElement {
     })
     return el
   }
+
+
+  //API Calls
 
   mqttPublishAPI(payload) {
     this.mqttPublish(payload, this.config.topic + '/api')
@@ -355,8 +395,41 @@ class ContentCardExample extends HTMLElement {
   // The height of your card. Home Assistant uses this to automatically
   // distribute all cards over the available columns.
   getCardSize() {
-    return 3;
+    return 2;
   }
+}
+
+
+function createSlider(onChange, value = 0, headline, min = 0, max = 100) {
+  const wrap = document.createElement('div')
+  if (headline) {
+    const hEl = document.createElement('h3')
+    hEl.innerHTML = headline
+    wrap.append(hEl)
+  }
+  const el = document.createElement('input')
+  el.style.display = "block"
+  el.type = 'range'
+  el.min = min
+  el.max = max
+  el.value = value
+  el.addEventListener('change', onChange)
+  wrap.append(el)
+  return wrap
+}
+
+function createSelect(options, selectedValue, onChange) {
+  const el = document.createElement('select')
+  options.forEach(function (item) {
+    const option = document.createElement('option')
+    option.selected = item.value === selectedValue
+    option.innerHTML = item.label
+    option.value = item.value
+    el.append(option)
+  })
+
+  el.onchange = onChange
+  return el
 }
 
 customElements.define('wled-control-card', ContentCardExample);

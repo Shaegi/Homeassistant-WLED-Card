@@ -1,4 +1,4 @@
-const fastLEDPallete = [
+const fastLEDPalette = [
   {
     label: "Default",
     value: 0

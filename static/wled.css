@@ -1,3 +1,5 @@
+/* This will only change MODAL STYLES not card styles... card styles are in shadowdom so they wont be affected by "global css" */
+
 :root {
   --lightGray: #d7dcdf; 
   --gray: #2c3e50; 
@@ -24,7 +26,7 @@ input {
 }
 
 h2 {
-  color: var(--gray);
+  color: var(--prim);
 }
 
 select {

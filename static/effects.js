@@ -2,7 +2,8 @@ const effects = [
   {
     label: "Solid",
     value: 0,
-    secondaryColor: false
+    secondaryColor: false,
+    fastLED: false
   },
   {
     label: "Blink",
@@ -337,5 +338,9 @@ const effects = [
   {
     label: "Railway",
     value: 78
+  },
+  {
+    label: "Ripple",
+    value: 79
   }
 ]
