@@ -94,4 +94,4 @@ views:
 
 ### Still got problems?
 
-Set an issue in github and I will try to help you!
+Report the issue via github and I will try to help you!
