@@ -2,6 +2,8 @@
 
 First of all big thanks to [Aircoookie](https://github.com/Aircoookie) and his incredible work at the [WLED repo](https://github.com/Aircoookie/WLED), without it this wouldn't be possible!
 
+![Test](https://marvinsemmelroth.de/media/wledcard.gif)
+
 ## Installation Guide
 1. Set up MQTT Broker for WLED (restart after setting it)
 > Guide: https://www.home-assistant.io/addons/mosquitto/
