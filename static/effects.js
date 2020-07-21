@@ -26,7 +26,7 @@ const effects = [
     secondaryColor: false
   },
   {
-    label: "Color",
+    label: "Random Colors",
     value: 5,
     primaryColor: false,
     secondaryColor: false
@@ -58,7 +58,7 @@ const effects = [
     value: 10
   },
   {
-    label: "Scan x2",
+    label: "Dual Scan",
     value: 11
   },
   {
@@ -66,11 +66,11 @@ const effects = [
     value: 12
   },
   {
-    label: "Chase",
+    label: "Theater",
     value: 13
   },
   {
-    label: "Chase Cl",
+    label: "Theater Rainbow",
     value: 14
   },
   {
@@ -79,19 +79,19 @@ const effects = [
     secondaryColor: false
   },
   {
-    label: "Twinkle",
+    label: "Saw",
     value: 16
   },
   {
-    label: "Twinkle R",
+    label: "Twinkle",
     value: 17
   },
   {
-    label: "Twinkle Fade",
+    label: "Dissolve",
     value: 18
   },
   {
-    label: "Twinkle RF",
+    label: "Dissolve Rnd",
     value: 19
   },
   {
@@ -99,11 +99,11 @@ const effects = [
     value: 20
   },
   {
-    label: "Sparkle Inv",
+    label: "Dark Sparkle",
     value: 21
   },
   {
-    label: "Sparkle Inv+",
+    label: "Sparkle+",
     value: 22
   },
   {
@@ -111,15 +111,15 @@ const effects = [
     value: 23
   },
   {
-    label: "Strobe Cl",
+    label: "Strobe Rainbow",
     value: 24
   },
   {
-    label: "Strobe +",
+    label: "Mega Strobe",
     value: 25
   },
   {
-    label: "Blink Cl",
+    label: "Blink Rainbow",
     value: 26
   },
   {
@@ -131,7 +131,7 @@ const effects = [
     value: 28
   },
   {
-    label: "Chase R",
+    label: "Chase Random",
     value: 29
   },
   {
@@ -144,11 +144,11 @@ const effects = [
     value: 31
   },
   {
-    label: "Chase RF",
+    label: "Chase Flash Rnd",
     value: 32
   },
   {
-    label: "Chase Cl Inv",
+    label: "Rainbow Runner",
     value: 33
   },
   {
@@ -164,7 +164,7 @@ const effects = [
     primaryColor: false
   },
   {
-    label: "Sweep R",
+    label: "Sweep Random",
     value: 36,
     secondaryColor: false,
     primaryColor: false
@@ -174,13 +174,13 @@ const effects = [
     value: 37
   },
   {
-    label: "Red/Blue",
+    label: "Red & Blue",
     value: 38,
     secondaryColor: false,
     primaryColor: false
   },
   {
-    label: "Running R",
+    label: "Stream",
     value: 39,
     secondaryColor: false,
     primaryColor: false
@@ -198,11 +198,11 @@ const effects = [
     value: 42
   },
   {
-    label: "Fireworks R ",
+    label: "Rain",
     value: 43
   },
   {
-    label: "Christmas",
+    label: "Merry Christmas",
     value: 44
   },
   {
@@ -218,19 +218,19 @@ const effects = [
     value: 47
   },
   {
-    label: "Wipe IO",
+    label: "Police",
     value: 48
   },
   {
-    label: "Wipe II",
+    label: "Police All",
     value: 49
   },
   {
-    label: "Wipe OO",
+    label: "Two Dots",
     value: 50
   },
   {
-    label: "Wipe OI",
+    label: "Two Areas",
     value: 51
   },
   {
@@ -242,15 +242,15 @@ const effects = [
     value: 53
   },
   {
-    label: "Tricolor Chase ",
+    label: "Tri Chase",
     value: 54
   },
   {
-    label: "Tricolor Wipe",
+    label: "Tri Wipe",
     value: 55
   },
   {
-    label: "Tricolor Fade",
+    label: "Tri Fade",
     value: 56
   },
   {
@@ -266,11 +266,11 @@ const effects = [
     value: 59
   },
   {
-    label: "Scanner x2",
+    label: "Dual Scanner",
     value: 60
   },
   {
-    label: "Random Chase",
+    label: "Stream 2",
     value: 61
   },
   {
@@ -301,22 +301,22 @@ const effects = [
     value: 68
   },
   {
-    label: "Fill Noise 8",
+    label: "Fill Noise",
     value: 69
   },
   {
-    label: "Noise 16 1i",
+    label: "Noise 1",
     value: 70
   },{
-    label: "Noise 16 2",
+    label: "Noise 2",
     value: 71
   },
   {
-    label: "Noise 16 3",
+    label: "Noise 3",
     value: 72
   },
   {
-    label: "Noise 16 4",
+    label: "Noise 4",
     value: 73
   },
   {
@@ -342,5 +342,129 @@ const effects = [
   {
     label: "Ripple",
     value: 79
+  },
+  {
+    label: "Twinklefox",
+    value: 80
+  },
+  {
+    label: "Twinklecat",
+    value: 81
+  },
+  {
+    label: "Halloween Eyes",
+    value: 82
+  },
+  {
+    label: "Solid Pattern",
+    value: 83
+  },
+  {
+    label: "Solid Pattern Tri",
+    value: 84
+  },
+  {
+    label: "Spots",
+    value: 85
+  },
+  {
+    label: "Spots Fade",
+    value: 86
+  },
+  {
+    label: "Glitter",
+    value: 87
+  },
+  {
+    label: "Candle",
+    value: 88
+  },
+  {
+    label: "Fireworks Starburst",
+    value: 89
+  },
+  {
+    label: "Fireworks 1D",
+    value: 90
+  },
+  {
+    label: "Bouncing Balls",
+    value: 91
+  },
+  {
+    label: "Sinelon",
+    value: 92
+  },
+  {
+    label: "Sinelon Dual",
+    value: 93
+  },
+  {
+    label: "Sinelon Rainbow",
+    value: 94
+  },
+  {
+    label: "Popcorn",
+    value: 95
+  },
+  {
+    label: "Drip",
+    value: 96
+  },
+  {
+    label: "Plasma",
+    value: 97
+  },
+  {
+    label: "Percent",
+    value: 98
+  },
+  {
+    label: "Ripple Rainbow",
+    value: 99
+  },
+  {
+    label: "Heartbeat",
+    value: 100
+  },
+  {
+    label: "Pacifica",
+    value: 101
+  },
+  {
+    label: "Candle Multi",
+    value: 102
+  },
+  {
+    label: "Solid Glitter",
+    value: 103
+  },
+  {
+    label: "Sunrise",
+    value: 104
+  },
+  {
+    label: "Phased",
+    value: 105
+  },
+  {
+    label: "Twinkle Up",
+    value: 106
+  },
+  {
+    label: "Noise Pal",
+    value: 107
+  },
+  {
+    label: "Sinewave",
+    value: 108
+  },
+  {
+    label: "Phased Noise",
+    value: 109
+  },
+  {
+    label: "Flow",
+    value: 110
   }
 ]
