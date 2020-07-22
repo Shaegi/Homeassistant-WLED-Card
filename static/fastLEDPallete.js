@@ -8,7 +8,7 @@ const fastLEDPalette = [
     value: 1
   },
   {
-    label: "Primary Color Only",
+    label: "Primary Color",
     value: 2
   },
   {
@@ -16,7 +16,7 @@ const fastLEDPalette = [
     value: 3
   },
   {
-    label: "Set Colors Only",
+    label: "Set Colors",
     value: 4
   },
   {
@@ -47,7 +47,7 @@ const fastLEDPalette = [
     value: 11
   },
   {
-    label: "Rainbow Stripe",
+    label: "Rainbow bands",
     value: 12
   },
   {
@@ -82,7 +82,7 @@ const fastLEDPalette = [
     value: 20
   },
   {
-    label: "Sunset2",
+    label: "Sunset 2",
     value: 21
   },
   {
@@ -179,10 +179,26 @@ const fastLEDPalette = [
   },
   {
     label: "Tiamat",
-    value: 43
+    value: 45
   },
   {
     label: "April Night",
-    value: 44
+    value: 46
+  },
+  {
+    label: "Orangery",
+    value: 47
+  },
+  {
+    label: "C9",
+    value: 48
+  },
+  {
+    label: "Sakura",
+    value: 49
+  },
+  {
+    label: "Aurora",
+    value: 50
   }
 ]
