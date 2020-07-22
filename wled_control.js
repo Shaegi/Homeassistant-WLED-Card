@@ -204,7 +204,7 @@ class ContentCardExample extends HTMLElement {
       self.updateOnState(self)
     }
 
-    this.brightnessSlider = createSlider(onChange, this.state.brightness, "Master Brightness", 0, 127)
+    this.brightnessSlider = createSlider(onChange, this.state.brightness, "Master Brightness", 0, 255)
 
     section.append(this.brightnessSlider)
 
@@ -342,7 +342,7 @@ class ContentCardExample extends HTMLElement {
       self.mqttPublishAPI(`SX=${value}`)
     }
 
-    return createSlider(onChange, this.state.fxSpeed, "Effect speed")
+    return createSlider(onChange, this.state.fxSpeed, "Effect speed", 0, 255)
   }
 
   initFXIntensitySlider() {
@@ -352,7 +352,7 @@ class ContentCardExample extends HTMLElement {
       self.mqttPublishAPI(`IX=${value}`)
     }
 
-    return createSlider(onChange, this.state.fxIntensity, "Effect intensity")
+    return createSlider(onChange, this.state.fxIntensity, "Effect intensity", 0, 255)
   }
 
   createColorPicker(api, initColor) {
@@ -396,7 +396,7 @@ class ContentCardExample extends HTMLElement {
 }
 
 
-function createSlider(onChange, value = 0, headline, min = 0, max = 100) {
+function createSlider(onChange, value = 0, headline, min = 0, max = 255) {
   const wrap = document.createElement('div')
   if (headline) {
     const hEl = document.createElement('h3')
