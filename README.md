@@ -47,11 +47,11 @@ views:
     cards:
       - type: custom:wled-control-card
         topic: "wled/lamp1"
-        ip: "192.168.0.94/"
+        ip: "192.168.0.94"
         title: lamp1
       - type: custom:wled-control-card
         topic: "wled/lamp2"
-        ip: "192.168.0.95/"
+        ip: "192.168.0.95"
         title: lamp2
 ````
 
