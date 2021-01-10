@@ -1,4 +1,5 @@
 import Tingle from 'tingle.js'
+import "tingle.js/dist/tingle.css"
 import Iro from '@jaames/iro'
 import "./static/wled.css";
 import fastLEDPalette from './static/fastLEDPallete'
@@ -15,11 +16,6 @@ const defaultState = {
 }
 
 class WledControlCard extends HTMLElement {
-
-  constructor(...args) {
-    super(...args)
-    console.dir(args)
-  }
 
   set hass(hass) {
     const self = this
@@ -94,6 +90,10 @@ class WledControlCard extends HTMLElement {
 
       svg {
         cursor: pointer;
+        height: 8vmin;
+        width: 8vmin;
+        min-height: 64px;
+        min-width: 64px;
       }
     `
 
@@ -101,6 +101,7 @@ class WledControlCard extends HTMLElement {
   }
 
   initContent() {
+      console.log('init content')
     const self = this
     const result = this.state
     const card = document.createElement('ha-card');
@@ -109,7 +110,7 @@ class WledControlCard extends HTMLElement {
     //clear loading
     this.content = document.createElement('div');
     this.content.style.padding = '0 16px 16px';
-    this.content.className = 'card'
+    this.content.className = 'wled-control-card'
     card.append(this.initCardStyle())
     this.appendChild(card);
     card.append(this.content);
@@ -147,6 +148,7 @@ class WledControlCard extends HTMLElement {
     detailsButton.innerHTML = 'Open Details'
 
     detailsButton.addEventListener('click', function () {
+      console.log('open', self.modal)
       self.modal.open()
     })
 
@@ -378,10 +380,14 @@ class WledControlCard extends HTMLElement {
   }
 
   mqttPublish(payload, topic = this.config.topic) {
-    this.instance.callService('mqtt', 'publish', {
-      topic,
-      payload
-    })
+    try {
+      this.instance.callService('mqtt', 'publish', {
+        topic,
+        payload
+      })
+    } catch(e) {
+      console.log(e)
+    }
   }
 
   setConfig(config) {

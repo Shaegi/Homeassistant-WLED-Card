@@ -38,9 +38,14 @@ option {
   padding: 5px;
 }
 
-.card button {
+.wled-control-card button {
   padding: 5px;
   background: none;
+}
+
+.wled-control-card svg {
+  height: 64px;
+  width: 64px;
 }
 
 input[type=range] {
@@ -66,6 +71,10 @@ input[type=range]::-webkit-slider-thumb {
 
 input[type=range]::-webkit-slider-thumb:hover {
   background: var(--prim);
+}
+
+.tingle-modal-box__content {
+  color: black
 }
 
 .range-slider__range::-webkit-slider-thumb:active {
