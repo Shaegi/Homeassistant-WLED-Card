@@ -28,8 +28,8 @@ const iconMap = {
 
 const icons = Object.keys(iconMap).reduce((acc, curr) => {
     acc[curr] = {
-        on: getSvgPath(iconMap[curr], true),
-        off: getSvgPath(iconMap[curr], false)
+        on: getSvgString(iconMap[curr], true),
+        off: getSvgString(iconMap[curr], false)
     }
     return acc
 }, {})
