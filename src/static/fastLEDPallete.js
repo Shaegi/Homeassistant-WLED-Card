@@ -202,3 +202,5 @@ const fastLEDPalette = [
     value: 50
   }
 ]
+
+export default fastLEDPalette

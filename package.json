@@ -1,0 +1,31 @@
+{
+  "name": "Homeassistant-WLED-Card",
+  "version": "1.0.0",
+  "description": "First of all big thanks to [Aircoookie](https://github.com/Aircoookie) and his incredible work at the [WLED repo](https://github.com/Aircoookie/WLED), without it this wouldn't be possible!",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shaegi/Homeassistant-WLED-Card.git"
+  },
+  "keywords": [],
+  "author": "shaegi <marvin.semmelroth@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Shaegi/Homeassistant-WLED-Card/issues"
+  },
+  "homepage": "https://github.com/Shaegi/Homeassistant-WLED-Card#readme",
+  "devDependencies": {
+    "css-loader": "^5.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.12.2",
+    "webpack-cli": "^4.3.1"
+  },
+  "dependencies": {
+    "@jaames/iro": "^5.3.1",
+    "@mdi/js": "^5.8.55",
+    "tingle.js": "^0.15.3"
+  }
+}

@@ -468,3 +468,4 @@ const effects = [
     value: 110
   }
 ]
+export default effects

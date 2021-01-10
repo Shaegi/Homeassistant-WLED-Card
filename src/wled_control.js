@@ -1,3 +1,10 @@
+import Tingle from 'tingle.js'
+import Iro from '@jaames/iro'
+import "./static/wled.css";
+import fastLEDPalette from './static/fastLEDPallete'
+import effects from './static/effects'
+import icons from './static/icons'
+
 const defaultState = {
   fx: 0,
   brightness: 0,
@@ -7,12 +14,15 @@ const defaultState = {
   fxIntensity: 0,
 }
 
+class WledControlCard extends HTMLElement {
 
-class ContentCardExample extends HTMLElement {
+  constructor(...args) {
+    super(...args)
+    console.dir(args)
+  }
 
   set hass(hass) {
     const self = this
-
     this.instance = hass
     if (!this.content) {
       this.content = document.createElement('div');
@@ -93,8 +103,8 @@ class ContentCardExample extends HTMLElement {
   initContent() {
     const self = this
     const result = this.state
-    this.initModal(result)
     const card = document.createElement('ha-card');
+    this.initModal(result)
     card.header = this.config.title;
     //clear loading
     this.content = document.createElement('div');
@@ -147,28 +157,18 @@ class ContentCardExample extends HTMLElement {
   }
 
   updateOnState (self){
-    const lampOn = `
-    <svg id="lamp123" style="height: 10vh" viewBox="0 0 24 24">
-      <path  fill="#FFEF00" d="M8,2H16L20,14H4L8,2M11,15H13V20H18V22H6V20H11V15Z" />
-    </svg>
-    `
-
-    const lampOff = `
-    <svg id="lamp123" style="height: 10vh" viewBox="0 0 24 24">
-      <path  fill="#2c3e50" d="M8,2H16L20,14H4L8,2M11,15H13V20H18V22H6V20H11V15Z" />
-    </svg>
-    `
+    const icon = icons[this.config.icon || 'lamp']
     if (Number(self.state.brightness) > 0) {
       //on
-      self.lampIcon.innerHTML = lampOn
+      self.lampIcon.innerHTML = icon.on
     } else {
       //off
-      self.lampIcon.innerHTML = lampOff
+      self.lampIcon.innerHTML = icon.off
     }
   }
 
   initModal() {
-    var modal = new tingle.modal({
+    var modal = new Tingle.modal({
       closeMethods: ['overlay', 'button', 'escape'],
       closeLabel: "Close",
       cssClass: ['custom-class-1', 'custom-class-2']
@@ -357,7 +357,7 @@ class ContentCardExample extends HTMLElement {
 
   createColorPicker(api, initColor) {
     const el = document.createElement('div')
-    var colorPicker = new iro.ColorPicker(el, {
+    var colorPicker = new Iro.ColorPicker(el, {
       height: 200,
       padding: 0,
       color: initColor
@@ -428,4 +428,4 @@ function createSelect(options, selectedValue, onChange) {
   return el
 }
 
-customElements.define('wled-control-card', ContentCardExample);
+customElements.define('wled-control-card', WledControlCard);

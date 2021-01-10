@@ -14,25 +14,13 @@ First of all big thanks to [Aircoookie](https://github.com/Aircoookie) and his i
 
 3. Clone repo and put it under www/wled_control/
 
-2. Add this to ressources in config/lovelace.ui.yaml
+4. Add this to ressources in config/lovelace.ui.yaml
 ````
-  - url: /local/lib/tingle.min.css
-    type: css
-  - url: /local/wled_control/static/wled.css
-    type: css
-  - url: /local/wled_control/static/effects.js
-    type: js
-  - url: /local/wled_control/static/fastLEDPallete.js
-    type: js
-  - url: /local/lib/tingle.min.js
-    type: js
-  - url: /local/lib/iro.min.js
-    type: js
-  - url: /local/wled_control/wled_control.js
+  - url: /local/wled_control/dist/main.js
     type: module
 
 ```` 
-3. Add the custom card like this
+5. Add the custom card like this
 
 > Note: IP is needed to load the initial state of WLED since we don't save the state in hassio all communication with the led will happen by MQTT-Messages
 
@@ -41,7 +29,6 @@ First of all big thanks to [Aircoookie](https://github.com/Aircoookie) and his i
         topic: "wled/[MQTTCHANNEL]"
         ip: "[WLEDIP]"
         title: WLED Strip
-        
 ````
 
 ## Troubleshooting
@@ -51,19 +38,7 @@ First of all big thanks to [Aircoookie](https://github.com/Aircoookie) and his i
 ````
 title: Home
 resources:
-  - url: /local/lib/tingle.min.css
-    type: css
-  - url: /local/wled_control/static/wled.css
-    type: css
-  - url: /local/wled_control/static/effects.js
-    type: js
-  - url: /local/wled_control/static/fastLEDPallete.js
-    type: js
-  - url: /local/lib/tingle.min.js
-    type: js
-  - url: /local/lib/iro.min.js
-    type: js
-  - url: /local/wled_control/wled_control.js
+  - url: /local/wled_control/dist/main.js
     type: module
 
 views:
